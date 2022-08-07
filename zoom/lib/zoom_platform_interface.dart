@@ -1,13 +1,7 @@
-// You have generated a new plugin project without
-// specifying the `--platforms` flag. A plugin project supports no platforms is generated.
-// To add platforms, run `flutter create -t plugin --platforms <platforms> .` under the same
-// directory. You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
-
 import 'dart:async';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:zoom/zoom_view.dart';
 import 'package:zoom/zoom_options.dart';
-import 'zoom_view.dart';
+import 'package:zoom/zoom_view.dart';
 export 'zoom_options.dart';
 
 abstract class ZoomPlatform extends PlatformInterface {
@@ -20,23 +14,38 @@ abstract class ZoomPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  /// Flutter Zoom SDK Initialization function
   Future<List> initZoom(ZoomOptions options) async {
     throw UnimplementedError('initZoom() has not been implemented.');
   }
 
-  Future<bool> startMeeting(ZoomMeetingOptions options) async {
-    throw UnimplementedError('startMeeting() has not been implemented.');
+  /// Flutter Zoom SDK Start Meeting function
+  Future<List> startMeeting(ZoomMeetingOptions options) async {
+    throw UnimplementedError('startMeetingLogin() has not been implemented.');
   }
 
+  /// Flutter Zoom SDK Start Meeting with Custom Meeting ID function
+  Future<List> startMeetingNormal(ZoomMeetingOptions options) async {
+    throw UnimplementedError('startMeetingNormal() has not been implemented.');
+  }
+
+  /// Flutter Zoom SDK Join Meeting function
   Future<bool> joinMeeting(ZoomMeetingOptions options) async {
     throw UnimplementedError('joinMeeting() has not been implemented.');
   }
 
+  /// Flutter Zoom SDK Get Meeting Status function
   Future<List> meetingStatus(String meetingId) async {
     throw UnimplementedError('meetingStatus() has not been implemented.');
   }
 
+  /// Flutter Zoom SDK Listen to Meeting Status function
   Stream<dynamic> onMeetingStatus() {
     throw UnimplementedError('onMeetingStatus() has not been implemented.');
+  }
+
+  /// Flutter Zoom SDK Get Meeting ID & Pass code after Starting Meeting function
+  Future<List> meetingDetails() async {
+    throw UnimplementedError('meetingDetails() has not been implemented.');
   }
 }

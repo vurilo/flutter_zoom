@@ -19,16 +19,6 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('initZoom() has not been implemented.');
   }
 
-  /// Flutter Zoom SDK Start Meeting function
-  Future<List> startMeeting(ZoomMeetingOptions options) async {
-    throw UnimplementedError('startMeetingLogin() has not been implemented.');
-  }
-
-  /// Flutter Zoom SDK Start Meeting with Custom Meeting ID function
-  Future<List> startMeetingNormal(ZoomMeetingOptions options) async {
-    throw UnimplementedError('startMeetingNormal() has not been implemented.');
-  }
-
   /// Flutter Zoom SDK Join Meeting function
   Future<bool> joinMeeting(ZoomMeetingOptions options) async {
     throw UnimplementedError('joinMeeting() has not been implemented.');

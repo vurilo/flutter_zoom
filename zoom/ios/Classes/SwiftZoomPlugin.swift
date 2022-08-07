@@ -13,7 +13,7 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
     let instance = SwiftFlutterZoomSdkPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
 
-    let eventChannel = FlutterEventChannel(name: "plugins.vurilo/zoom_event_stream", binaryMessenger: messenger)
+    let eventChannel = FlutterEventChannel(name: "com.vurilo/zoom_event_stream", binaryMessenger: messenger)
     eventChannel.setStreamHandler(instance)
   }
 

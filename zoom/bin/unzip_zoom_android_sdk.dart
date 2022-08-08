@@ -66,30 +66,30 @@ void main(List<String> args) async {
 }
 
 Future<void> checkAndDownloadSDK(String location) async {
-  var iosSDKFile = location +
-      '/ios/MobileRTC.xcframework/ios-arm64_armv7/MobileRTC.framework/MobileRTC';
-  bool exists = await File(iosSDKFile).exists();
+  // var iosSDKFile = location +
+  //     '/ios/MobileRTC.xcframework/ios-arm64_armv7/MobileRTC.framework/MobileRTC';
+  // bool exists = await File(iosSDKFile).exists();
 
-  if (!exists) {
-    await downloadFile(
-        Uri.parse(
-            'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_ios/MobileRTC'),
-        iosSDKFile);
-  }
+  // if (!exists) {
+  //   await downloadFile(
+  //       Uri.parse(
+  //           'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_ios/MobileRTC'),
+  //       iosSDKFile);
+  // }
 
-  var iosSimulateSDKFile = location +
-      '/ios/MobileRTC.xcframework/ios-x86_64-simulator/MobileRTC.framework/MobileRTC';
-  exists = await File(iosSimulateSDKFile).exists();
+  // var iosSimulateSDKFile = location +
+  //     '/ios/MobileRTC.xcframework/ios-x86_64-simulator/MobileRTC.framework/MobileRTC';
+  // exists = await File(iosSimulateSDKFile).exists();
 
-  if (!exists) {
-    await downloadFile(
-        Uri.parse(
-            'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_ios/simulator/MobileRTC'),
-        iosSimulateSDKFile);
-  }
+  // if (!exists) {
+  //   await downloadFile(
+  //       Uri.parse(
+  //           'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_ios/simulator/MobileRTC'),
+  //       iosSimulateSDKFile);
+  // }
 
   var androidCommonLibFile = location + '/android/libs/commonlib.aar';
-  exists = await File(androidCommonLibFile).exists();
+  bool exists = await File(androidCommonLibFile).exists();
   if (!exists) {
     await downloadFile(
         Uri.parse(

@@ -275,4 +275,43 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
   public void onDetachedFromActivity() {
     this.activity = null;
   }
+
+
+
+    private void startMeeting(MethodCall methodCall, MethodChannel.Result result) {
+
+        Map<String, String> options = methodCall.arguments();
+
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if(!zoomSDK.isInitialized()) {
+            System.out.println("Not initialized!!!!!!");
+            result.success(false);
+            return;
+        }
+
+        final MeetingService meetingService = zoomSDK.getMeetingService();
+
+        StartMeetingOptions opts = new StartMeetingOptions();
+        opts.no_invite = parseBoolean(options, "disableInvite", false);
+        opts.no_share = parseBoolean(options, "disableShare", false);
+        opts.no_driving_mode = parseBoolean(options, "disableDrive", false);
+        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn", false);
+        opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio", false);
+        opts.no_audio = parseBoolean(options, "noAudio", false);
+        opts.meeting_views_options = parseInt(options, "meetingViewOptions", 0); 
+  
+        
+        StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();
+
+        params.userId = options.get("userId");
+        params.displayName = options.get("displayName");
+        params.meetingNo = options.get("meetingId");
+        params.userType = MeetingService.USER_TYPE_API_USER;
+        params.zoomAccessToken = options.get("zoomAccessToken");
+
+        meetingService.startMeetingWithParams(context, params, opts);
+
+        result.success(true);
+    }
 }

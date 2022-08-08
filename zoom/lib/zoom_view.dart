@@ -73,4 +73,27 @@ class ZoomView extends ZoomPlatform {
         .invokeMethod<List>('meeting_details')
         .then<List>((List? value) => value ?? List.empty());
   }
+
+  @override
+  Future<bool> startMeeting(ZoomMeetingOptions options) async {
+    assert(options.zoomAccessToken != null);
+    assert(options.displayName != null);
+    var optionMap = Map<String, String?>();
+    optionMap.putIfAbsent("userId", () => options.userId);
+    optionMap.putIfAbsent("displayName", () => options.displayName!);
+    optionMap.putIfAbsent("meetingId", () => options.meetingId);
+    optionMap.putIfAbsent("meetingPassword", () => options.meetingPassword);
+    // optionMap.putIfAbsent("zoomToken", () => options.zoomToken);
+    optionMap.putIfAbsent("zoomAccessToken", () => options.zoomAccessToken!);
+    optionMap.putIfAbsent("disableDialIn", () => options.disableDialIn);
+    optionMap.putIfAbsent("disableDrive", () => options.disableDrive);
+    optionMap.putIfAbsent("disableInvite", () => options.disableInvite);
+    optionMap.putIfAbsent("disableShare", () => options.disableShare);
+    optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
+    optionMap.putIfAbsent("noAudio", () => options.noAudio);
+
+    return channel
+        .invokeMethod<bool>('start', optionMap)
+        .then<bool>((bool? value) => value ?? false);
+  }
 }

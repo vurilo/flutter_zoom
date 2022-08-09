@@ -91,6 +91,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("disableShare", () => options.disableShare);
     optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
+    optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
 
     return channel
         .invokeMethod<bool>('start', optionMap)

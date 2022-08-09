@@ -53,6 +53,8 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin,FlutterStreamHandler , Mob
         //       self.startMeetingNormal(call: call, result: result)
           case "meeting_status":
               self.meetingStatus(call: call, result: result)
+            case "start":
+            self.startMeeting(call: call, result: result)
           case "meeting_details":
               self.meetingDetails(call: call, result: result)
           default:
@@ -189,91 +191,73 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin,FlutterStreamHandler , Mob
             }
         }
 
-        // Basic Start Meeting Function called on startMeeting triggered via login function
-        // public func startMeeting(call: FlutterMethodCall, result: FlutterResult) {
-
-        //     let meetingService = MobileRTC.shared().getMeetingService()
-        //     let meetingSettings = MobileRTC.shared().getMeetingSettings()
-        //     let authService = MobileRTC.shared().getAuthService()
-           
-        //     if meetingService != nil{
-        //         if ((authService?.isLoggedIn()) == true) {
-        //             let arguments = call.arguments as! Dictionary<String, String?>
-
-        //             //Setting up meeting settings for zoom sdk
-        //             meetingSettings?.disableDriveMode(parseBoolean(data: arguments["disableDrive"]!, defaultValue: false))
-        //             meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: false))
-        //             meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: false))
-        //             meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: false))
-        //             meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: false)
-        //             meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableDrive"]!, defaultValue: false)
-        //             let viewOpts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: false)
-        //             if viewOpts {
-        //                 meetingSettings?.meetingTitleHidden = true
-        //                 meetingSettings?.meetingPasswordHidden = true
-        //             }
-                    
-        //             //Setting up Start Meeting parameter
-        //             let startMeetingParameters = MobileRTCMeetingStartParam4LoginlUser()
-                    
-        //             //Starting the meeting and storing the response
-        //             let response = meetingService?.startMeeting(with: startMeetingParameters)
-
-        //             if let response = response {
-        //                 print("Got response from start: \(response)")
-        //             }
-        //             result(["MEETING SUCCESS", "200"])
-        //         }else{
-        //             result(["LOGIN REQUIRED", "001"])
-        //         }
-        //     } else {
-        //         result(["SDK ERROR", "001"])
-        //     }
-        // }
-    
-        // Meeting ID passed Start Meeting Function called on startMeetingNormal triggered via startMeetingNormal function
-        // public func startMeetingNormalInternal(call: FlutterMethodCall, result: FlutterResult) {
-
-        //     let meetingService = MobileRTC.shared().getMeetingService()
-        //     let meetingSettings = MobileRTC.shared().getMeetingSettings()
-        //     let authService = MobileRTC.shared().getAuthService()
+         public func startMeeting(call: FlutterMethodCall, result: FlutterResult) {
         
-        //     if meetingService != nil{
-        //         if ((authService?.isLoggedIn()) == true) {
-        //             let arguments = call.arguments as! Dictionary<String, String?>
-
-        //             //Setting up meeting settings for zoom sdk
-        //             meetingSettings?.disableDriveMode(parseBoolean(data: arguments["disableDrive"]!, defaultValue: false))
-        //             meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: false))
-        //             meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: false))
-        //             meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: false))
-        //             meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: false)
-        //             meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableDrive"]!, defaultValue: false)
-        //             let viewopts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: false)
-        //             if viewopts {
-        //                 meetingSettings?.meetingTitleHidden = true
-        //                 meetingSettings?.meetingPasswordHidden = true
-        //             }
+        let meetingService = MobileRTC.shared().getMeetingService()
+        let meetingSettings = MobileRTC.shared().getMeetingSettings()
+        
+        if meetingService != nil {
+            
+            let arguments = call.arguments as! Dictionary<String, String?>
+            
+            meetingSettings?.disableDriveMode(parseBoolean(data: arguments["disableDrive"]!, defaultValue: false))
+            meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: false))
+            meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: false))
+            meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: false))
+            meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: false)
+            meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableDrive"]!, defaultValue: false)
+            if  arguments["meetingViewOptions"] != nil{
+                let meetingViewOptions = parseInt(data: arguments["meetingViewOptions"]!, defaultValue: 0)   
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_AUDIO) != 0 {
+                    meetingSettings?.meetingAudioHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_LEAVE) != 0 {
+                    meetingSettings?.meetingLeaveHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_MORE) != 0 {
+                    meetingSettings?.meetingMoreHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_PARTICIPANTS) != 0 {
+                    meetingSettings?.meetingParticipantHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_SWITCH_AUDIO_SOURCE) != 0 {
+                   
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_SWITCH_CAMERA) != 0 {
                     
-        //             //Setting up Start Meeting parameter
-        //             let startMeetingParameters = MobileRTCMeetingStartParam4LoginlUser()
-        //             //Passing custom Meeting ID for start meeting
-        //             startMeetingParameters.meetingNumber = arguments["meetingId"]!!
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_BUTTON_VIDEO) != 0 {
+                    meetingSettings?.meetingVideoHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_TEXT_MEETING_ID) != 0 {
+                    meetingSettings?.meetingTitleHidden = true
+                }
+                if (meetingViewOptions & MeetingViewOptions.NO_TEXT_PASSWORD) != 0 {
+                    meetingSettings?.meetingPasswordHidden = true
+                }
+            }
+            let user: MobileRTCMeetingStartParam4WithoutLoginUser = MobileRTCMeetingStartParam4WithoutLoginUser.init()
+            
+            user.userType = .apiUser
+            user.meetingNumber = arguments["meetingId"]!!
+            user.userName = arguments["displayName"]!!
+           // user.userToken = arguments["zoomToken"]!!
+            user.userID = arguments["userId"]!!
+            user.zak = arguments["zoomAccessToken"]!!
 
-        //             //Starting the meeting and storing the response
-        //             let response = meetingService?.startMeeting(with: startMeetingParameters)
+            let param: MobileRTCMeetingStartParam = user
+            
+            let response = meetingService?.startMeeting(with: param)
+            
+            if let response = response {
+                print("Got response from start: \(response)")
+            }
+            result(true)
+        } else {
+            result(false)
+        }
+    }
 
-        //             if let response = response {
-        //                 print("Got response from start: \(response)")
-        //             }
-        //             result(["MEETING SUCCESS", "200"])
-        //         }else{
-        //             result(["LOGIN REQUIRED", "001"])
-        //         }
-        //     } else {
-        //         result(["SDK ERROR", "001"])
-        //     }
-        // }
 
         //Helper Function for parsing string to boolean value
         private func parseBoolean(data: String?, defaultValue: Bool) -> Bool {

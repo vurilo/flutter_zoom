@@ -76,6 +76,8 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
       case "join":
         joinMeeting(methodCall, result);
         break;
+      case "start":
+      startMeeting(methodCall,result);
 
       case "meeting_status":
         meetingStatus(result);
@@ -295,13 +297,12 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         final MeetingService meetingService = zoomSDK.getMeetingService();
 
         StartMeetingOptions opts = new StartMeetingOptions();
-        opts.no_invite = parseBoolean(options, "disableInvite", false);
-        opts.no_share = parseBoolean(options, "disableShare", false);
-        opts.no_driving_mode = parseBoolean(options, "disableDrive", false);
-        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn", false);
-        opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio", false);
-        opts.no_audio = parseBoolean(options, "noAudio", false);
-        opts.meeting_views_options = parseInt(options, "meetingViewOptions", 0); 
+        opts.no_invite = parseBoolean(options, "disableInvite");
+        opts.no_share = parseBoolean(options, "disableShare");
+        opts.no_driving_mode = parseBoolean(options, "disableDrive");
+        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
+        opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
+        opts.no_audio = parseBoolean(options, "noAudio");
   
         
         StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();

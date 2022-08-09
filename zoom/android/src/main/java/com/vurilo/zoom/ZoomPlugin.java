@@ -31,6 +31,8 @@ import us.zoom.sdk.ZoomSDKAuthenticationListener;
 import us.zoom.sdk.ZoomSDKInitParams;
 import us.zoom.sdk.ZoomSDKInitializeListener;
 import io.flutter.plugin.common.MethodChannel.Result;
+import us.zoom.sdk.StartMeetingParamsWithoutLogin;
+
 
 /** FlutterZoomPlugin */
 public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {

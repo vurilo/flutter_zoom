@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name_zoom_local">%1$d</string>
+    <string name="app_name_zoom_local">Vurilo </string>
+    <string name="zoom_notification_content">Vurilo meeting is running</string>
 </resources>

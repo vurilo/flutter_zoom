@@ -16,10 +16,6 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-
-        flatDir {
-            dirs file('libs')
-        }
     }
 }
 
@@ -75,6 +71,6 @@ dependencies {
 
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
-    api(name: 'commonlib', ext: 'aar')
-    api(name: 'mobilertc', ext: 'aar')
+    implementation files('libs/commonlib.aar')
+    implementation files('libs/mobilertc.aar')
 }

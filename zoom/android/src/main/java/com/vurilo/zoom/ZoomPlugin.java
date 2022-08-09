@@ -3,6 +3,7 @@ package com.vurilo.zoom;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import java.util.Arrays;
 import java.util.List;
@@ -23,11 +24,8 @@ import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingStatus;
 import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.StartMeetingOptions;
-import us.zoom.sdk.StartMeetingParams4NormalUser;
-import us.zoom.sdk.ZoomAuthenticationError;
 import us.zoom.sdk.ZoomError;
 import us.zoom.sdk.ZoomSDK;
-import us.zoom.sdk.ZoomSDKAuthenticationListener;
 import us.zoom.sdk.ZoomSDKInitParams;
 import us.zoom.sdk.ZoomSDKInitializeListener;
 import io.flutter.plugin.common.MethodChannel.Result;
@@ -95,19 +93,8 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     methodChannel.setMethodCallHandler(null);
   }
 
-  private void sendReply(List data) {
-    if (this.pendingResult == null) {
-      return;
-    }
-    this.pendingResult.success(data);
-    this.clearPendingResult();
-  }
 
-  private void clearPendingResult() {
-    this.pendingResult = null;
-  }
 
-  // Initializing the Zoom SDK for Android
   private void init(final MethodCall methodCall, final Result result) {
     Map<String, String> options = methodCall.arguments();
 
@@ -139,11 +126,13 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
 
     // Set custom Notification fro android
     final CustomizedNotificationData data = new CustomizedNotificationData();
-    // data.setContentTitleId(R.string.app_name_zoom_local);
-    // data.setContentTextId(R.string.app_name_zoom_local);
-    data.setLargeIconId(R.drawable.zm_mm_type_emoji);
-    data.setSmallIconId(R.drawable.zm_mm_type_emoji);
-    data.setSmallIconForLorLaterId(R.drawable.zm_mm_type_emoji);
+    data.setContentTitleId(R.string.app_name_zoom_local);
+    data.setContentTextId(R.string.zoom_notification_content);
+    data.setLargeIconId(R.drawable.ic_v);
+    data.setSmallIconId(R.drawable.ic_v);
+    data.setSmallIconForLorLaterId(R.drawable.ic_v);
+    data.setBgColorId(R.color.logoColor);
+
 
     ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
       /**

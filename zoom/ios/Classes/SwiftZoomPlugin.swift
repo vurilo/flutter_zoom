@@ -69,8 +69,8 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
         
         let context = MobileRTCSDKInitContext()
         context.domain = arguments["domain"]!
-        context.enableLog = true
         context.bundleResPath = pluginBundlePath
+        context.appGroupId = arguments["appGroupId"]
         MobileRTC.shared().initialize(context)
         
         let auth = MobileRTC.shared().getAuthService()

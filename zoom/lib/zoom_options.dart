@@ -1,5 +1,8 @@
 /// Basic Zoom Options required for plugin (WEB, iOS, Android)
 class ZoomOptions {
+  // for apple id app group id
+  String? appGroupId;
+
   String? domain;
 
   /// Domain For Zoom Web
@@ -29,13 +32,13 @@ class ZoomOptions {
   /// --Disable Join Audio for web
   bool? audioPanelAlwaysOpen;
 
-  /// -- Allow Pannel Always Open for web
+  /// -- Allow Panel Always Open for web
   bool? isSupportAV;
 
   /// --AV Support for web
   bool? isSupportChat;
 
-  /// --Chat Suppport for web
+  /// --Chat Support for web
   bool? isSupportQA;
 
   /// --QA Support for web
@@ -92,7 +95,8 @@ class ZoomOptions {
   /// --Meeting Info for web
 
   ZoomOptions(
-      {required this.domain,
+      {required this.appGroupId,
+      required this.domain,
       this.appKey,
       this.appSecret,
       this.language = "en-US",

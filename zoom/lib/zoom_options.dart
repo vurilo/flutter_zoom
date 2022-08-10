@@ -1,5 +1,8 @@
 /// Basic Zoom Options required for plugin (WEB, iOS, Android)
 class ZoomOptions {
+  // for apple id app group id
+  String? appGroupId;
+
   String? domain;
 
   /// Domain For Zoom Web
@@ -9,6 +12,8 @@ class ZoomOptions {
   String? appSecret;
 
   /// --JWT secret for web / SDK secret for iOS / Android
+  String? jwtToken;
+
   String? language;
 
   /// --Language for web
@@ -29,13 +34,13 @@ class ZoomOptions {
   /// --Disable Join Audio for web
   bool? audioPanelAlwaysOpen;
 
-  /// -- Allow Pannel Always Open for web
+  /// -- Allow Panel Always Open for web
   bool? isSupportAV;
 
   /// --AV Support for web
   bool? isSupportChat;
 
-  /// --Chat Suppport for web
+  /// --Chat Support for web
   bool? isSupportQA;
 
   /// --QA Support for web
@@ -92,9 +97,11 @@ class ZoomOptions {
   /// --Meeting Info for web
 
   ZoomOptions(
-      {required this.domain,
-      this.appKey,
-      this.appSecret,
+      {required this.appGroupId,
+      required this.domain,
+      this.appKey = '',
+      this.appSecret = '',
+      this.jwtToken,
       this.language = "en-US",
       this.showMeetingHeader = true,
       this.disableInvite = false,
@@ -189,6 +196,8 @@ class ZoomMeetingOptions {
 
   /// JWT API Signature For Web Only
 
+  int? userType;
+
   ZoomMeetingOptions({
     this.userId,
     this.userPassword,
@@ -207,6 +216,7 @@ class ZoomMeetingOptions {
     this.zoomAccessToken,
     this.jwtAPIKey,
     this.jwtSignature,
+    this.userType = 2,
   });
 }
 

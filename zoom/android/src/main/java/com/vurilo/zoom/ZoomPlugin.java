@@ -110,6 +110,8 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     initParams.appKey = options.get("appKey");
     initParams.appSecret = options.get("appSecret");
     initParams.domain = options.get("domain");
+    initParams.jwtToken = options.get("jwtToken");
+    
     initParams.enableLog = true;
 
     final InMeetingNotificationHandle handle = (context, intent) -> {
@@ -128,9 +130,9 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     final CustomizedNotificationData data = new CustomizedNotificationData();
     data.setContentTitleId(R.string.app_name_zoom_local);
     data.setContentTextId(R.string.zoom_notification_content);
-    data.setLargeIconId(R.drawable.ic_v);
-    data.setSmallIconId(R.drawable.ic_v);
-    data.setSmallIconForLorLaterId(R.drawable.ic_v);
+    data.setLargeIconId(R.drawable.ic_v_outlined);
+    data.setSmallIconId(R.drawable.ic_v_outlined);
+    data.setSmallIconForLorLaterId(R.drawable.ic_v_outlined);
     data.setBgColorId(R.color.logoColor);
 
 

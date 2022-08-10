@@ -198,7 +198,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
 
     JoinMeetingParams params = new JoinMeetingParams();
 
-    params.displayName = options.get("userId");
+    params.displayName = options.get("displayName");
     params.meetingNo = options.get("meetingId");
     params.password = options.get("meetingPassword");
 

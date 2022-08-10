@@ -38,6 +38,7 @@ class ZoomView extends ZoomPlatform {
   Future<bool> joinMeeting(ZoomMeetingOptions options) async {
     var optionMap = <String, String?>{};
     optionMap.putIfAbsent("userId", () => options.userId);
+    optionMap.putIfAbsent("displayName", () => options.displayName);
     optionMap.putIfAbsent("meetingId", () => options.meetingId);
     optionMap.putIfAbsent("meetingPassword", () => options.meetingPassword);
     optionMap.putIfAbsent("disableDialIn", () => options.disableDialIn);

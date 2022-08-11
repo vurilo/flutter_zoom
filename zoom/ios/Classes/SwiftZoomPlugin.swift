@@ -71,6 +71,7 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
         context.domain = arguments["domain"]!
         context.bundleResPath = pluginBundlePath
         context.appGroupId = arguments["appGroupId"]
+        context.replaykitBundleIdentifier = "com.vurilo.app.dev"
         MobileRTC.shared().initialize(context)
         
         let auth = MobileRTC.shared().getAuthService()
@@ -142,7 +143,7 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
             let joinMeetingParameters = MobileRTCMeetingJoinParam()
             
             //Setting up Custom Join Meeting parameter
-            joinMeetingParameters.userName = arguments["userId"]!!
+            joinMeetingParameters.userName = arguments["displayName"]!!
             joinMeetingParameters.meetingNumber = arguments["meetingId"]!!
             
             let hasPassword = arguments["meetingPassword"]! != nil
@@ -192,7 +193,7 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
             // user.userToken = arguments["zoomToken"]!!
             user.userID = arguments["userId"]!!
             user.zak = arguments["zoomAccessToken"]!!
-            
+            user.isAppShare = true
             let param: MobileRTCMeetingStartParam = user
             
             let response = meetingService?.startMeeting(with: param)

@@ -31,7 +31,6 @@ import us.zoom.sdk.ZoomSDKInitializeListener;
 import io.flutter.plugin.common.MethodChannel.Result;
 import us.zoom.sdk.StartMeetingParamsWithoutLogin;
 
-
 /** FlutterZoomPlugin */
 public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {
   Activity activity;
@@ -75,7 +74,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         joinMeeting(methodCall, result);
         break;
       case "start":
-      startMeeting(methodCall,result);
+        startMeeting(methodCall, result);
 
       case "meeting_status":
         meetingStatus(result);
@@ -93,8 +92,6 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     methodChannel.setMethodCallHandler(null);
   }
 
-
-
   private void init(final MethodCall methodCall, final Result result) {
     Map<String, String> options = methodCall.arguments();
 
@@ -111,7 +108,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     initParams.appSecret = options.get("appSecret");
     initParams.domain = options.get("domain");
     initParams.jwtToken = options.get("jwtToken");
-    
+
     initParams.enableLog = true;
 
     final InMeetingNotificationHandle handle = (context, intent) -> {
@@ -135,7 +132,6 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     data.setSmallIconForLorLaterId(R.drawable.ic_v_outlined);
     data.setBgColorId(R.color.logoColor);
 
-
     ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
       /**
        * @param errorCode {@link us.zoom.sdk.ZoomError#ZOOM_ERROR_SUCCESS} if the SDK
@@ -152,8 +148,9 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         }
 
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
-        ZoomSDK.getInstance().getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
-        ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
+        zoomSDK.getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
+        zoomSDK.getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
+        zoomSDK.getZoomUIService().hideMeetingInviteUrl(true);
 
         MeetingService meetingService = zoomSDK.getMeetingService();
         meetingStatusChannel.setStreamHandler(new StatusStreamHandler(meetingService));
@@ -194,6 +191,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     boolean view_options = parseBoolean(options, "viewOptions");
     if (view_options) {
       opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;
+      opts.custom_meeting_id = "Vurilo";
     }
 
     JoinMeetingParams params = new JoinMeetingParams();
@@ -271,47 +269,45 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     this.activity = null;
   }
 
+  private void startMeeting(MethodCall methodCall, MethodChannel.Result result) {
 
+    Map<String, String> options = methodCall.arguments();
 
-    private void startMeeting(MethodCall methodCall, MethodChannel.Result result) {
+    ZoomSDK zoomSDK = ZoomSDK.getInstance();
 
-        Map<String, String> options = methodCall.arguments();
-
-        ZoomSDK zoomSDK = ZoomSDK.getInstance();
-
-        if(!zoomSDK.isInitialized()) {
-            System.out.println("Not initialized!!!!!!");
-            result.success(false);
-            return;
-        }
-
-        final MeetingService meetingService = zoomSDK.getMeetingService();
-
-        StartMeetingOptions opts = new StartMeetingOptions();
-        opts.no_invite = parseBoolean(options, "disableInvite");
-        opts.no_share = parseBoolean(options, "disableShare");
-        opts.no_titlebar = parseBoolean(options, "disableTitlebar");
-        opts.no_driving_mode = parseBoolean(options, "disableDrive");
-        opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
-        opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
-        opts.no_audio = parseBoolean(options, "noAudio");
-        boolean view_options = parseBoolean(options, "viewOptions");
-        if (view_options) {
-          opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;
-          opts.invite_options=0;
-        }
-      
-        
-        StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();
-
-        params.userId = options.get("userId");
-        params.displayName = options.get("displayName");
-        params.meetingNo = options.get("meetingId");
-        params.userType = MeetingService.USER_TYPE_API_USER;
-        params.zoomAccessToken = options.get("zoomAccessToken");
-
-        meetingService.startMeetingWithParams(context, params, opts);
-
-        result.success(true);
+    if (!zoomSDK.isInitialized()) {
+      System.out.println("Not initialized!!!!!!");
+      result.success(false);
+      return;
     }
+
+    final MeetingService meetingService = zoomSDK.getMeetingService();
+
+    StartMeetingOptions opts = new StartMeetingOptions();
+    opts.no_invite = parseBoolean(options, "disableInvite");
+    opts.no_share = parseBoolean(options, "disableShare");
+    opts.no_titlebar = parseBoolean(options, "disableTitlebar");
+    opts.no_driving_mode = parseBoolean(options, "disableDrive");
+    opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
+    opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
+    opts.no_audio = parseBoolean(options, "noAudio");
+    boolean view_options = parseBoolean(options, "viewOptions");
+    if (view_options) {
+      opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;
+      opts.invite_options = 0;
+      opts.custom_meeting_id = "Vurilo";
+    }
+
+    StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();
+
+    params.userId = options.get("userId");
+    params.displayName = options.get("displayName");
+    params.meetingNo = options.get("meetingId");
+    params.userType = MeetingService.USER_TYPE_API_USER;
+    params.zoomAccessToken = options.get("zoomAccessToken");
+
+    meetingService.startMeetingWithParams(context, params, opts);
+
+    result.success(true);
+  }
 }

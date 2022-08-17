@@ -71,7 +71,7 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
         context.domain = arguments["domain"]!
         context.bundleResPath = pluginBundlePath
         context.appGroupId = arguments["appGroupId"]
-        context.replaykitBundleIdentifier = "com.vurilo.app.dev"
+        context.replaykitBundleIdentifier = "com.vurilo.app"
         MobileRTC.shared().initialize(context)
         
         let auth = MobileRTC.shared().getAuthService()
@@ -123,20 +123,28 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
         let meetingSettings = MobileRTC.shared().getMeetingSettings()
         
         if (meetingService != nil) {
+            meetingService?.customizeMeetingTitle("Vurilo")
+            
             let arguments = call.arguments as! Dictionary<String, String?>
             
             //Setting up meeting settings for zoom sdk
             meetingSettings?.disableDriveMode(parseBoolean(data: arguments["disableDrive"]!, defaultValue: false))
-            meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: false))
-            meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: false))
-            meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: false))
+            meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: true))
+            meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: true))
+            meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: true))
             meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: false)
-            meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableDrive"]!, defaultValue: false)
-            meetingSettings?.meetingTitleHidden = parseBoolean(data:arguments["disableTitlebar"]!, defaultValue: false)
-            let viewOpts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: false)
-            if viewOpts {
-                meetingSettings?.meetingTitleHidden = true
-                meetingSettings?.meetingPasswordHidden = true
+            meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableInvite"]!, defaultValue: true)
+            meetingSettings?.disableCopyMeetingUrl(true);
+            if  arguments["viewOptions"] != nil{
+                let viewOpts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: true)
+                if viewOpts {
+                    meetingSettings?.meetingTitleHidden = false
+                    meetingSettings?.meetingPasswordHidden = true
+                    meetingSettings?.meetingInviteHidden = true
+                    meetingSettings?.meetingInviteUrlHidden = true
+                    // meetingSettings?.meetingShareHidden = true
+                    // meetingSettings?.hintHidden=true
+                }
             }
             
             //Setting up Join Meeting parameter
@@ -169,20 +177,25 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
         let meetingSettings = MobileRTC.shared().getMeetingSettings()
         
         if meetingService != nil {
+            meetingService?.customizeMeetingTitle("Vurilo")
             
             let arguments = call.arguments as! Dictionary<String, String?>
-            
             meetingSettings?.disableDriveMode(parseBoolean(data: arguments["disableDrive"]!, defaultValue: false))
-            meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: false))
-            meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: false))
-            meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: false))
-            meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: false)
-            meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableInvite"]!, defaultValue: false)
+            meetingSettings?.disableCall(in: parseBoolean(data: arguments["disableDialIn"]!, defaultValue: true))
+            meetingSettings?.setAutoConnectInternetAudio(parseBoolean(data: arguments["noDisconnectAudio"]!, defaultValue: true))
+            meetingSettings?.setMuteAudioWhenJoinMeeting(parseBoolean(data: arguments["noAudio"]!, defaultValue: true))
+            meetingSettings?.meetingShareHidden = parseBoolean(data: arguments["disableShare"]!, defaultValue: true)
+            meetingSettings?.meetingInviteHidden = parseBoolean(data: arguments["disableInvite"]!, defaultValue: true)
+            meetingSettings?.disableCopyMeetingUrl(true);
             if  arguments["viewOptions"] != nil{
-                let viewOpts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: false)
+                let viewOpts = parseBoolean(data:arguments["viewOptions"]!, defaultValue: true)
                 if viewOpts {
-                    meetingSettings?.meetingTitleHidden = true
+                    meetingSettings?.meetingTitleHidden = false
                     meetingSettings?.meetingPasswordHidden = true
+                    meetingSettings?.meetingInviteHidden = true
+                    meetingSettings?.meetingInviteUrlHidden = true
+                    // meetingSettings?.meetingShareHidden = true
+                    // meetingSettings?.hintHidden = true
                 }
             }
             let user: MobileRTCMeetingStartParam4WithoutLoginUser = MobileRTCMeetingStartParam4WithoutLoginUser.init()

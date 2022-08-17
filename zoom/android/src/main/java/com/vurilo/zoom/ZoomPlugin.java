@@ -290,11 +290,17 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         StartMeetingOptions opts = new StartMeetingOptions();
         opts.no_invite = parseBoolean(options, "disableInvite");
         opts.no_share = parseBoolean(options, "disableShare");
+        opts.no_titlebar = parseBoolean(options, "disableTitlebar");
         opts.no_driving_mode = parseBoolean(options, "disableDrive");
         opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
         opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
         opts.no_audio = parseBoolean(options, "noAudio");
-  
+        boolean view_options = parseBoolean(options, "viewOptions");
+        if (view_options) {
+          opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;
+          opts.invite_options=0;
+        }
+      
         
         StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();
 

@@ -75,7 +75,10 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         break;
       case "start":
         startMeeting(methodCall, result);
-
+        break;
+      case "leave":
+        leaveMeeting(methodCall, result);
+        break;
       case "meeting_status":
         meetingStatus(result);
         break;
@@ -257,6 +260,11 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
   public void logout() {
     ZoomSDK zoomSDK = ZoomSDK.getInstance();
     zoomSDK.logoutZoom();
+  }
+
+  public void leaveMeeting(MethodCall methodCall, MethodChannel.Result result) {
+    ZoomSDK zoomSDK = ZoomSDK.getInstance();
+    zoomSDK.leaveMeeting();
   }
 
   @Override

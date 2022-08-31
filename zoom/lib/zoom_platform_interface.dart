@@ -43,7 +43,7 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('startMeeting() has not been implemented.');
   }
 
-  Future<dynamic> leaveMeeting(ZoomMeetingOptions options) async {
+  Future<dynamic> leave() async {
     throw UnimplementedError('leaveMeeting() has not been implemented.');
   }
 }

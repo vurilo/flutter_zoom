@@ -104,10 +104,7 @@ class ZoomView extends ZoomPlatform {
   }
 
   @override
-  Future<dynamic> leaveMeeting(ZoomMeetingOptions options) async {
-    assert(options.zoomAccessToken != null);
-    var optionMap = Map<String, String?>();
-
-    return channel.invokeMethod('leave', optionMap);
+  Future<dynamic> leave() async {
+    return channel.invokeMethod('leave');
   }
 }

@@ -77,7 +77,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         startMeeting(methodCall, result);
         break;
       case "leave":
-        leaveMeeting(methodCall, result);
+        leave(methodCall, result);
         break;
       case "meeting_status":
         meetingStatus(result);
@@ -262,11 +262,6 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     zoomSDK.logoutZoom();
   }
 
-  public void leaveMeeting(MethodCall methodCall, MethodChannel.Result result) {
-    ZoomSDK zoomSDK = ZoomSDK.getInstance();
-    zoomSDK.leaveMeeting();
-  }
-
   @Override
   public void onDetachedFromActivityForConfigChanges() {
     this.activity = null;
@@ -277,6 +272,18 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     this.activity = null;
   }
 
+  public void leave(MethodCall methodCall, MethodChannel.Result result){
+  ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+  if (!zoomSDK.isInitialized()) {
+    System.out.println("Not initialized!!!!!!");
+    result.success(Arrays.asList("MEETING_STATUS_UNKNOWN", "SDK not initialized"));
+    return;
+  }
+  MeetingService meetingService = zoomSDK.getMeetingService();
+  meetingService.leaveCurrentMeeting(true);
+
+}
   private void startMeeting(MethodCall methodCall, MethodChannel.Result result) {
 
     Map<String, String> options = methodCall.arguments();

@@ -102,4 +102,9 @@ class ZoomView extends ZoomPlatform {
         .invokeMethod<bool>('start', optionMap)
         .then<bool>((bool? value) => value ?? false);
   }
+
+  @override
+  Future<dynamic> leave() async {
+    return channel.invokeMethod('leave');
+  }
 }

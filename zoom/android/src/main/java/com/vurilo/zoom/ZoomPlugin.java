@@ -75,7 +75,9 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         break;
       case "start":
         startMeeting(methodCall, result);
-
+      case "leave":
+        leave(methodCall, result);
+        break;
       case "meeting_status":
         meetingStatus(result);
         break;
@@ -310,4 +312,16 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
 
     result.success(true);
   }
+
+  public void leave(MethodCall methodCall, MethodChannel.Result result){
+  ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+  if (!zoomSDK.isInitialized()) {
+    System.out.println("Not initialized!!!!!!");
+    result.success(Arrays.asList("MEETING_STATUS_UNKNOWN", "SDK not initialized"));
+    return;
+  }
+  MeetingService meetingService = zoomSDK.getMeetingService();
+  meetingService.leaveCurrentMeeting(true);
+}
 }

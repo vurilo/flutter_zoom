@@ -198,6 +198,8 @@ class ZoomMeetingOptions {
 
   int? userType;
 
+  String? customer_key;
+
   ZoomMeetingOptions({
     this.userId,
     this.userPassword,
@@ -217,6 +219,7 @@ class ZoomMeetingOptions {
     this.jwtAPIKey,
     this.jwtSignature,
     this.userType = 2,
+    this.customer_key,
   });
 }
 

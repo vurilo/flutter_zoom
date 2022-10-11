@@ -49,7 +49,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
-
+    optionMap.putIfAbsent("customer_key", () => options.customer_key);
     return await channel
         .invokeMethod<bool>('join', optionMap)
         .then<bool>((bool? value) => value ?? false);
@@ -96,6 +96,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("disableShare", () => options.disableShare);
     optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
+    optionMap.putIfAbsent("customer_key", () => options.customer_key);
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
 
     return channel

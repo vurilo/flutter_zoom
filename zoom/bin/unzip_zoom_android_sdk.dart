@@ -93,7 +93,7 @@ Future<void> checkAndDownloadSDK(String location) async {
   if (!exists) {
     await downloadFile(
         Uri.parse(
-            'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_android/commonlib.aar'),
+            'https://vurilo-zoom-sdk.s3.ap-south-1.amazonaws.com/android/commonlib.aar'),
         androidCommonLibFile);
   }
   var androidRTCLibFile = location + '/android/libs/mobilertc.aar';
@@ -101,7 +101,7 @@ Future<void> checkAndDownloadSDK(String location) async {
   if (!exists) {
     await downloadFile(
         Uri.parse(
-            'https://vurilo-zoom-sdks.s3.amazonaws.com/zoom_android/mobilertc.aar'),
+            'https://vurilo-zoom-sdk.s3.ap-south-1.amazonaws.com/android/mobilertc.aar'),
         androidRTCLibFile);
   }
 }

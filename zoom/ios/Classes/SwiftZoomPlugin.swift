@@ -204,7 +204,7 @@ public class SwiftZoomPlugin: NSObject, FlutterPlugin, FlutterStreamHandler , Mo
             user.meetingNumber = arguments["meetingId"]!!
             user.userName = arguments["displayName"]!!
             // user.userToken = arguments["zoomToken"]!!
-            user.userID = arguments["userId"]!!
+            // user.userID = arguments["userId"]!!
             user.zak = arguments["zoomAccessToken"]!!
             // user.isAppShare = true
             let param: MobileRTCMeetingStartParam = user

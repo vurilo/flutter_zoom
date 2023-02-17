@@ -3,6 +3,7 @@ package com.vurilo.zoom;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import us.zoom.sdk.InMeetingService;
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
+import us.zoom.sdk.InMeetingAudioController;
 import us.zoom.sdk.MeetingStatus;
 import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.StartMeetingOptions;
@@ -40,7 +42,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
   private Context context;
   private EventChannel meetingStatusChannel;
   private InMeetingService inMeetingService;
-
+  private InMeetingAudioController mInMeetingAudioController;
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     this.activity = binding.getActivity();
@@ -84,6 +86,9 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
       case "meeting_details":
         meetingDetails(result);
         break;
+      case "resume":
+        resumeMeeting(result);
+        break;
       default:
         result.notImplemented();
     }
@@ -96,9 +101,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
 
   private void init(final MethodCall methodCall, final Result result) {
     Map<String, String> options = methodCall.arguments();
-
     ZoomSDK zoomSDK = ZoomSDK.getInstance();
-
     if (zoomSDK.isInitialized()) {
       List<Integer> response = Arrays.asList(0, 0);
       result.success(response);
@@ -110,9 +113,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     initParams.appSecret = options.get("appSecret");
     initParams.domain = options.get("domain");
     initParams.jwtToken = options.get("jwtToken");
-
     initParams.enableLog = true;
-
     final InMeetingNotificationHandle handle = (context, intent) -> {
       intent = new Intent(context, ZoomPlugin.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -152,9 +153,8 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
         zoomSDK.getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
         zoomSDK.getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
+        zoomSDK.getMeetingSettingsHelper().setMuteMyMicrophoneWhenJoinMeeting(true);
         zoomSDK.getZoomUIService().hideMeetingInviteUrl(true);
-
-
         MeetingService meetingService = zoomSDK.getMeetingService();
         meetingStatusChannel.setStreamHandler(new StatusStreamHandler(meetingService));
         result.success(response);
@@ -180,9 +180,7 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
       result.success(false);
       return;
     }
-
     MeetingService meetingService = zoomSDK.getMeetingService();
-
     JoinMeetingOptions opts = new JoinMeetingOptions();
     opts.no_invite = parseBoolean(options, "disableInvite");
     opts.no_share = parseBoolean(options, "disableShare");
@@ -197,24 +195,26 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
       opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;
       opts.custom_meeting_id = "Vurilo";
     }
-
     JoinMeetingParams params = new JoinMeetingParams();
-
     params.displayName = options.get("displayName");
     params.meetingNo = options.get("meetingId");
     params.password = options.get("meetingPassword");
-
-
-
-
     meetingService.joinMeetingWithParams(context, params, opts);
-
     result.success(true);
   }
 
   // Helper Function for parsing string to boolean value
   private boolean parseBoolean(Map<String, String> options, String property) {
     return options.get(property) != null && Boolean.parseBoolean(options.get(property));
+  }
+
+  // Resume paused meeting
+  private void resumeMeeting(Result result){
+    Log.d("resumemeeting","resumemettign is called");
+    ZoomSDK zoomSDK = ZoomSDK.getInstance();
+    MeetingService meetingService = zoomSDK.getMeetingService();
+    meetingService.returnToMeeting(context);
+    result.success(true);
   }
 
   // Get Meeting Details Programmatically after Starting the Meeting
@@ -281,14 +281,12 @@ public class ZoomPlugin implements FlutterPlugin, MethodChannel.MethodCallHandle
     Map<String, String> options = methodCall.arguments();
 
     ZoomSDK zoomSDK = ZoomSDK.getInstance();
-
     if (!zoomSDK.isInitialized()) {
       System.out.println("Not initialized!!!!!!");
       result.success(false);
       return;
     }
-
-    final MeetingService meetingService = zoomSDK.getMeetingService();
+   final MeetingService meetingService = zoomSDK.getMeetingService();
 
     StartMeetingOptions opts = new StartMeetingOptions();
     opts.no_invite = parseBoolean(options, "disableInvite");

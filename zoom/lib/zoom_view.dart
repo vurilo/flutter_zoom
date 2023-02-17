@@ -108,4 +108,9 @@ class ZoomView extends ZoomPlatform {
   Future<dynamic> leave() async {
     return channel.invokeMethod('leave');
   }
+
+  @override
+  Future<dynamic> resume() async {
+    return channel.invokeMethod<bool>('resume');
+  }
 }

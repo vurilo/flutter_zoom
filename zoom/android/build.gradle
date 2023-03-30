@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.4.0'
     }
 }
 
@@ -75,6 +75,6 @@ dependencies {
 
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
-    implementation files('libs/commonlib.aar')
-    implementation files('libs/mobilertc.aar')
+    compileOnly files('libs/commonlib.aar')
+    compileOnly files('libs/mobilertc.aar')
 }

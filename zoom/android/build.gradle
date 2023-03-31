@@ -17,9 +17,9 @@ rootProject.allprojects {
         google()
         jcenter()
 
-        flatDir {
-            dirs project(':zoom').file('libs')
-        }
+        // flatDir {
+        //     dirs project(':zoom').file('libs')
+        // }
     }
 }
 
@@ -42,6 +42,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+     sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 }
 
@@ -75,6 +80,6 @@ dependencies {
 
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
-    compileOnly files('libs/commonlib.aar')
-    compileOnly files('libs/mobilertc.aar')
+    implementation (files("libs/commonlib.aar"))
+    implementation (files("libs/mobilertc.aar"))
 }
